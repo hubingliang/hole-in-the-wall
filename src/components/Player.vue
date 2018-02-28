@@ -87,7 +87,6 @@ export default {
     }
   }
   .about{
-    width: 470px;
     color: white;
     .name{
       font-size: 40px;
