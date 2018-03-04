@@ -1,6 +1,6 @@
 <template>
   <div class="player animated fadeInRight">
-    <div class="discBox" draggable="true" @click="play">
+    <div class="discBox" draggable="true">
         <img class="disc" src="../assets/disc-plus.png" alt="">
         <img class="disc_light" v-bind:class="{rotate: rotate ,norotate: !rotate}" src="../assets/disc_light-plus.png" alt="">
         <img class="cover" v-bind:class="{rotate: rotate ,norotate: !rotate}" id="cover" src="../assets/L'atelier.png" alt="">
@@ -45,6 +45,8 @@ export default {
       let disc = document.querySelector('.discBox')
       let divStyler = styler(disc)
       let ballXY = value({ x: 0, y: 0 }, divStyler.set)
+      let homePage = window.location.href
+      let albumPage = window.location.href + 'Album'
 
       listen(disc, 'mousedown touchstart')
         .start((e) => {
@@ -54,9 +56,13 @@ export default {
 
       listen(document, 'mouseup touchend')
         .start(() => {
-          console.log(ballXY.get())
-          if(ballXY.get().x > 0){
-            window.location.href = window.location.href + 'Album'
+          let end = ballXY.get().x
+          if(end > 100){
+            window.location.href = albumPage
+          }else if(Math.abs(end) < 100 && end !== 0){
+            this.play()
+          }else if(end < -100){
+            window.location.href = homePage
           }
           spring({
             from: ballXY.get(),

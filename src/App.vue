@@ -17,6 +17,15 @@ export default {
   },
   methods:{
     start: function(){
+      //获取域名
+      let host = window.location.host;
+      let host2 = document.domain; 
+
+      //获取页面完整地址
+      let url = window.location.href;
+      console.log(host)
+      console.log(host2)
+      console.log(url)
       var APP_ID = 'h6cX3hTUNLmcMuii5PVooVXT-gzGzoHsz';
       var APP_KEY = '5VKLcP36cCBI2YbaAEpV8dy0';
 
