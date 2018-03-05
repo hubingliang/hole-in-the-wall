@@ -1,38 +1,10 @@
 <template>
   <div class="Album animated fadeInRight">
-      <div class="disc">
-          <img src="..\assets\BG.jpg" alt="">
+      <div class="disc" v-for="music in musics" v-bind:key='music.name'>
+          <img :src="music.cover" alt="" @mousemove="changeMusic(music)">
           <div class="about">
-              <div class="name">Watson Blues</div>
-              <div class="author">Tommy Emmanuel</div>
-          </div>
-      </div>
-      <div class="disc">
-          <img src="..\assets\BG.jpg" alt="">
-          <div class="about">
-              <div class="name">Watson Blues</div>
-              <div class="author">Tommy Emmanuel</div>
-          </div>
-      </div>
-      <div class="disc">
-          <img src="..\assets\BG.jpg" alt="">
-          <div class="about">
-              <div class="name">Watson Blues</div>
-              <div class="author">Tommy Emmanuel</div>
-          </div>
-      </div>
-      <div class="disc">
-          <img src="..\assets\BG.jpg" alt="">
-          <div class="about">
-              <div class="name">Watson Blues</div>
-              <div class="author">Tommy Emmanuel</div>
-          </div>
-      </div>
-      <div class="disc">
-          <img src="..\assets\BG.jpg" alt="">
-          <div class="about">
-              <div class="name">Watson Blues</div>
-              <div class="author">Tommy Emmanuel</div>
+              <div class="name">{{ music.name }}</div>
+              <div class="author">{{ music.author }}</div>
           </div>
       </div>
   </div>
@@ -40,35 +12,42 @@
 
 <script>
 export default {
-  mounted(){
-      this.album()
-  },
-  methods:{
-    album: function(){
-        let { styler, spring, listen, pointer, value } = window.popmotion
-        let album = document.querySelector('.Album')
-        let divStyler = styler(album)
-        let ballXY = value({ x: 0, y: 0 }, divStyler.set)
+    props:['musics','currentMusic'],
+    mounted(){
+        this.album()
+    },
+    methods:{
+        album: function(){
+            let { styler, spring, listen, pointer, value } = window.popmotion
+            let album = document.querySelector('.Album')
+            let divStyler = styler(album)
+            let ballXY = value({ x: 0, y: 0 }, divStyler.set)
 
-        listen(album, 'mousedown touchstart')
-            .start((e) => {
-                e.preventDefault()
-                pointer(ballXY.get()).start(ballXY)
-            })
+            listen(album, 'mousedown touchstart')
+                .start((e) => {
+                    e.preventDefault()
+                    pointer(ballXY.get()).start(ballXY)
+                })
 
-        listen(document, 'mouseup touchend')
-            .start(() => {
-                spring({
-                    from: ballXY.get(),
-                    velocity: ballXY.getVelocity(),
-                    to: { x: 0, y: 0 },
-                    stiffness: 200,
-                    // mass: 1,
-                    // damping: 10
-                }).start(ballXY)
-            })
-        }
-    }
+            listen(document, 'mouseup touchend')
+                .start(() => {
+                    spring({
+                        from: ballXY.get(),
+                        velocity: ballXY.getVelocity(),
+                        to: { x: 0, y: 0 },
+                        stiffness: 200,
+                        // mass: 1,
+                        // damping: 10
+                    }).start(ballXY)
+                })
+        },
+        changeMusic: function(music){
+            this.currentMusic.cover = music.cover
+            this.currentMusic.url = music.url
+            this.currentMusic.name = music.name
+            this.currentMusic.author = music.author
+        },
+    },
 }
 </script>
 

@@ -1,17 +1,11 @@
 <template>
-  <div class="player animated fadeInRight">
+  <div class="player animated fadeIn">
     <div class="discBox" draggable="true">
         <img class="disc" src="../assets/disc-plus.png" alt="">
         <img class="disc_light" v-bind:class="{rotate: rotate ,norotate: !rotate}" src="../assets/disc_light-plus.png" alt="">
-        <img class="cover" v-bind:class="{rotate: rotate ,norotate: !rotate}" id="cover" src="../assets/L'atelier.png" alt="">
+        <img class="cover" v-bind:class="{rotate: rotate ,norotate: !rotate}" id="cover" :src="currentMusic.cover" alt="">
     </div>
-    <audio id="audio" src="http://m10.music.126.net/20180228173349/d6f10079a7c5d92e25e6ce2cca320959/ymusic/ebf8/b7e9/ce7c/c622e044a26eac3cebae34887bd6df2d.mp3"></audio>
-    <router-link to="/Album">
-      <div class="about">
-        <div class="name">Seventh 9</div>
-        <div class="author">Sungha Jung</div>
-      </div>
-    </router-link>
+    <audio id="audio" :src="currentMusic.url"></audio>
   </div>
 </template>
 
@@ -24,6 +18,7 @@ export default {
       rotate: false,
     }
   },
+  props:['currentMusic'],
   mounted(){
     this.disc()
   },
