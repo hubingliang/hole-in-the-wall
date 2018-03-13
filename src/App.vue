@@ -60,11 +60,7 @@ export default {
         console.log(this.XWlist.id)
         for(let i = 0;i<this.XWlist.length;i++){
           this.musicsIds[i] = this.XWlist[i].id
-          for(let ii=0;ii<urls.length;ii++){
-            if(this.XWlist[i].id === urls[ii].id){
-              this.XWlist[i].url = urls[ii].url
-            }
-          }
+          this.XWlist[i].url = `http://music.163.com/song/media/outer/url?id=${this.XWlist[i].id}.mp3`
         }
         console.log(this.musicsIds)
       }, function (error) {
