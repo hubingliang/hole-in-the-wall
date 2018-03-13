@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Player v-bind:currentMusic="currentMusic"></Player>
-    <router-view v-bind:musics="musics" v-bind:currentMusic="currentMusic"/>
+    <router-view v-bind:musics="musics" v-bind:currentMusic="currentMusic" v-bind:XWlist="XWlist"/>
   </div>
 </template>
 
@@ -19,17 +19,23 @@ export default {
           author: "Moses Gunn Collective",
           album: "Mercy Mountain",
           cover: "http://ac-h6cX3hTU.clouddn.com/61a482e96ea53c5a280d.png"
-      }
+      },
+      playList: [],
+      XWlist: [],
+      musicsIds: []
     }
   },
   components: {
     Player
   },
   mounted(){
+    this.AV()
     this.start()
+    this.getPlayList()
+    this.getMusicsId()
   },
   methods:{
-    start: function(){
+    AV: function(){
       var APP_ID = 'h6cX3hTUNLmcMuii5PVooVXT-gzGzoHsz';
       var APP_KEY = '5VKLcP36cCBI2YbaAEpV8dy0';
 
@@ -37,6 +43,8 @@ export default {
         appId: APP_ID,
         appKey: APP_KEY
       });
+    },
+    start: function(){
       var query = new AV.Query('Music');
       query.get('5a9d240b128fe1189bf1f582').then( (music) => {
         this.musics = music.attributes.music
@@ -44,6 +52,36 @@ export default {
         // 异常处理
       });
     },
+    getPlayList: function(){
+      var query = new AV.Query('playList');
+      query.get('5aa74116a22b9d0045985ab2').then( (playList) => {
+        this.XWlist = playList.attributes.json.result.tracks
+        let urls = playList.attributes.musicsUrl.data
+        console.log(this.XWlist.id)
+        for(let i = 0;i<this.XWlist.length;i++){
+          this.musicsIds[i] = this.XWlist[i].id
+          for(let ii=0;ii<urls.length;ii++){
+            if(this.XWlist[i].id === urls[ii].id){
+              this.XWlist[i].url = urls[ii].url
+            }
+          }
+        }
+        console.log(this.musicsIds)
+      }, function (error) {
+        console.log(error)
+      });
+    },
+    getMusicsId: function(){
+      var query = new AV.Query('playList');
+      query.get('5aa74116a22b9d0045985ab2').then( (playList) => {
+        for(let i = 0;i<this.XWlist.length;i++){
+          this.musicsIds[i] = this.XWlist[i].id
+        }
+        console.log(this.musicsIds)
+      }, function (error) {
+        console.log(error)
+      });
+    }
   }
 }
 </script>
