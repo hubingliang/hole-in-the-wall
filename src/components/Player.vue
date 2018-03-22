@@ -2,8 +2,8 @@
   <div class="player animated fadeIn">
     <div class="discBox" draggable="true">
         <img class="disc" src="../assets/disc-plus.png" alt="">
-        <img class="disc_light" v-bind:class="{rotate: rotate ,norotate: !rotate}" src="../assets/disc_light-plus.png" alt="">
-        <img class="cover" v-bind:class="{rotate: rotate ,norotate: !rotate}" id="cover" :src="currentMusic.cover" alt="">
+        <img class="disc_light" :class="{rotate: rotate ,norotate: !rotate}" src="../assets/disc_light-plus.png" alt="">
+        <img class="cover" :class="{rotate: rotate ,norotate: !rotate}" id="cover" :src="currentMusic.cover" alt="">
     </div>
     <audio id="audio" :src="currentMusic.url"></audio>
   </div>
@@ -18,7 +18,7 @@ export default {
       rotate: false,
     }
   },
-  props:['currentMusic'],
+  props:['currentMusic','currentList'],
   mounted(){
     this.disc()
   },
@@ -41,8 +41,12 @@ export default {
       let divStyler = styler(disc)
       let ballXY = value({ x: 0, y: 0 }, divStyler.set)
       let homePage = window.location.href
-      let albumPage = window.location.href + 'Album'
-
+      let albumPage = window.location.href + 'Album/like'
+      let LyricPage = window.location.href + 'Controller'
+      let audio = document.getElementById('audio')  
+      audio.onended = ()=> {
+        this.nextMusic()
+      };
       listen(disc, 'mousedown touchstart')
         .start((e) => {
           e.preventDefault()
@@ -51,13 +55,24 @@ export default {
 
       listen(document, 'mouseup touchend')
         .start(() => {
-          let end = ballXY.get().x
-          if(end > 100){
+          let endX = ballXY.get().x
+          let endY = ballXY.get().y
+          if(endX > 100){
             window.location.href = albumPage
-          }else if(Math.abs(end) < 100 && end !== 0){
-            this.play()
-          }else if(end < -100){
-            window.location.href = homePage
+          }else if(Math.abs(endX) < 100 && endX !== 0){
+            if(Math.abs(endY) > 150){
+              this.nextMusic()
+            }else{
+              this.play()
+            }
+          }else if(endX < -100){
+            if(window.location.href === albumPage){
+              window.location.href = homePage
+            }else{
+              window.location.href = LyricPage
+            }
+          }else if(endY > 300){
+            
           }
           spring({
             from: ballXY.get(),
@@ -69,6 +84,20 @@ export default {
           }).start(ballXY)
         })
     },
+    nextMusic: function(){
+      let musicMumber = this.currentList.length
+      let i = Math.floor(Math.random()*(musicMumber+1))
+      let audio = document.getElementById('audio')  
+      this.currentMusic.cover = this.currentList[i].album.blurPicUrl
+      this.currentMusic.url = `http://music.163.com/song/media/outer/url?id=${this.currentList[i].id}.mp3`
+      this.currentMusic.name = this.currentList[i].name
+      this.currentMusic.author = this.currentList[i].artists[0].name
+      setTimeout(() => {
+        audio.play()
+        this.rotate = true
+        this.playing = true
+      }, 500);
+    }
   }
 }
 </script>
@@ -110,6 +139,7 @@ export default {
     }
     .cover{
         width: 292px;
+        height: 292px;
         position: absolute;
         border-radius: 50%;      
     }

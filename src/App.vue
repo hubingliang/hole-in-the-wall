@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Player v-bind:currentMusic="currentMusic"></Player>
-    <router-view v-bind:musics="musics" v-bind:currentMusic="currentMusic" v-bind:XWlist="XWlist"/>
+    <Player v-bind:currentMusic="currentMusic" v-bind:currentList="currentList"></Player>
+    <router-view v-bind:currentList="currentList" v-bind:currentMusic="currentMusic" v-bind:jazzList="jazzList" v-bind:likeList="likeList" v-bind:happyList="happyList" v-bind:sunnyList="sunnyList"/>
   </div>
 </template>
 
@@ -11,7 +11,6 @@ export default {
   name: 'App',
   data(){
     return{
-      musics: [],
       currentMusic: {
           id: 1,
           url: "http://ac-h6cX3hTU.clouddn.com/70e8d84cadcc6de6e746.mp3",
@@ -20,9 +19,17 @@ export default {
           album: "Mercy Mountain",
           cover: "http://ac-h6cX3hTU.clouddn.com/61a482e96ea53c5a280d.png"
       },
-      playList: [],
-      XWlist: [],
-      musicsIds: []
+      currentList: [],
+      jazzList: [],
+      happyList: [],
+      likeList : [],
+      sunnyList : [],
+      objectId: {
+        jazz : '5aa74116a22b9d0045985ab2',
+        happy : '5aa9348c2f301e0036537558',
+        like : '5aabdacd9f545448cf28e36e',
+        sunny : '5aaf95549f5454250d9a8b12'
+      }
     }
   },
   components: {
@@ -30,9 +37,10 @@ export default {
   },
   mounted(){
     this.AV()
-    this.start()
-    this.getPlayList()
-    this.getMusicsId()
+    this.getHappy()
+    this.getJazz()
+    this.getLike()
+    this.getsunny()
   },
   methods:{
     AV: function(){
@@ -44,40 +52,31 @@ export default {
         appKey: APP_KEY
       });
     },
-    start: function(){
-      var query = new AV.Query('Music');
-      query.get('5a9d240b128fe1189bf1f582').then( (music) => {
-        this.musics = music.attributes.music
-      }, function (error) {
-        // 异常处理
-      });
-    },
-    getPlayList: function(){
-      var query = new AV.Query('playList');
-      query.get('5aa74116a22b9d0045985ab2').then( (playList) => {
-        this.XWlist = playList.attributes.json.result.tracks
-        let urls = playList.attributes.musicsUrl.data
-        console.log(this.XWlist.id)
-        for(let i = 0;i<this.XWlist.length;i++){
-          this.musicsIds[i] = this.XWlist[i].id
-          this.XWlist[i].url = `http://music.163.com/song/media/outer/url?id=${this.XWlist[i].id}.mp3`
+    getPlayList: function(objectId,list){
+      var query = new AV.Query('playList')
+      query.get(`${objectId}`).then( (playList) => {
+        for(let i = 0;i<playList.attributes.json.result.tracks.length;i++){
+          list.push(playList.attributes.json.result.tracks[i])
+          list[i].url = `http://music.163.com/song/media/outer/url?id=${list[i].id}.mp3`
         }
-        console.log(this.musicsIds)
+        this.currentList = [...this.likeList]
       }, function (error) {
         console.log(error)
-      });
+      })
+      
     },
-    getMusicsId: function(){
-      var query = new AV.Query('playList');
-      query.get('5aa74116a22b9d0045985ab2').then( (playList) => {
-        for(let i = 0;i<this.XWlist.length;i++){
-          this.musicsIds[i] = this.XWlist[i].id
-        }
-        console.log(this.musicsIds)
-      }, function (error) {
-        console.log(error)
-      });
-    }
+    getJazz: function(){
+      this.getPlayList(this.objectId.jazz,this.jazzList)
+    },
+    getHappy: function(){
+      this.getPlayList(this.objectId.happy,this.happyList)
+    },
+    getLike: function(){
+      this.getPlayList(this.objectId.like,this.likeList)
+    },
+    getsunny: function(){
+      this.getPlayList(this.objectId.sunny,this.sunnyList)
+    },
   }
 }
 </script>
