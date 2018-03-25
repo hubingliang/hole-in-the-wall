@@ -3,9 +3,9 @@
     <div class="discBox" draggable="true">
         <img class="disc" src="../assets/disc-plus.png" alt="">
         <img class="disc_light" :class="{rotate: rotate ,norotate: !rotate}" src="../assets/disc_light-plus.png" alt="">
-        <img class="cover" :class="{rotate: rotate ,norotate: !rotate}" id="cover" :src="currentMusic.cover" alt="">
+        <img class="cover" :class="{rotate: rotate ,norotate: !rotate}" id="cover" :src="current.currentMusic.cover" alt="">
     </div>
-    <audio id="audio" :src="currentMusic.url"></audio>
+    <audio id="audio" :src="current.currentMusic.url"></audio>
   </div>
 </template>
 
@@ -16,9 +16,10 @@ export default {
     return {
       playing: false,
       rotate: false,
+      currentIndex: 0
     }
   },
-  props:['currentMusic','currentList'],
+  props:['current'],
   mounted(){
     this.disc()
   },
@@ -62,6 +63,8 @@ export default {
           }else if(Math.abs(endX) < 100 && endX !== 0){
             if(Math.abs(endY) > 150){
               this.nextMusic()
+              this.rotate = true
+              this.playing = true
             }else{
               this.play()
             }
@@ -85,19 +88,63 @@ export default {
         })
     },
     nextMusic: function(){
-      let musicMumber = this.currentList.length
-      let i = Math.floor(Math.random()*(musicMumber+1))
-      let audio = document.getElementById('audio')  
-      this.currentMusic.cover = this.currentList[i].album.blurPicUrl
-      this.currentMusic.url = `http://music.163.com/song/media/outer/url?id=${this.currentList[i].id}.mp3`
-      this.currentMusic.name = this.currentList[i].name
-      this.currentMusic.author = this.currentList[i].artists[0].name
-      setTimeout(() => {
-        audio.play()
-        this.rotate = true
-        this.playing = true
-      }, 500);
-    }
+      switch (this.current.currentLoop) {
+        case 'random':
+          this.random()
+          break;
+        case 'singleLoop':
+          this.singleLoop()
+          break;
+        case 'listLoop':
+          this.listLoop()
+          break;
+      }  
+    },
+    random: function(){
+        let musicMumber = this.current.currentList.length
+        let i = Math.floor(Math.random()*(musicMumber+1))
+        this.currentIndex = i
+        let audio = document.getElementById('audio')  
+        this.current.currentMusic.cover = this.current.currentList[i].album.blurPicUrl
+        this.current.currentMusic.url = `http://music.163.com/song/media/outer/url?id=${this.current.currentList[i].id}.mp3`
+        this.current.currentMusic.name = this.current.currentList[i].name
+        this.current.currentMusic.author = this.current.currentList[i].artists[0].name
+        setTimeout(() => {
+            audio.play()
+            this.rotate = true
+            this.playing = true
+        }, 500);
+    },
+    singleLoop: function(){
+        let audio = document.getElementById('audio')  
+        setTimeout(() => {
+            audio.load()
+            audio.play()
+            this.rotate = true
+            this.playing = true
+        }, 0);
+    },
+    listLoop: function(){
+        console.log(this.current.currentList.length)
+        var i = this.currentIndex
+        if(i === this.current.currentList.length){
+            i = 0
+        }else{
+            i = i + 1
+        }
+        this.currentIndex = i
+        console.log(i)
+        let audio = document.getElementById('audio')  
+        this.current.currentMusic.cover = this.current.currentList[i].album.blurPicUrl
+        this.current.currentMusic.url = `http://music.163.com/song/media/outer/url?id=${this.current.currentList[i].id}.mp3`
+        this.current.currentMusic.name = this.current.currentList[i].name
+        this.current.currentMusic.author = this.current.currentList[i].artists[0].name
+        setTimeout(() => {
+            audio.play()
+            this.rotate = true
+            this.playing = true
+        }, 500); 
+    },
   }
 }
 </script>

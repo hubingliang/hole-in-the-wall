@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Player v-bind:currentMusic="currentMusic" v-bind:currentList="currentList"></Player>
-    <router-view v-bind:currentList="currentList" v-bind:currentMusic="currentMusic" v-bind:jazzList="jazzList" v-bind:likeList="likeList" v-bind:happyList="happyList" v-bind:sunnyList="sunnyList"/>
+    <Player v-bind:current="current"></Player>
+    <router-view v-bind:current="current" v-bind:musicList="musicList" v-on:changeFunction="changeFunction"/>
   </div>
 </template>
 
@@ -11,19 +11,24 @@ export default {
   name: 'App',
   data(){
     return{
-      currentMusic: {
-          id: 1,
-          url: "http://ac-h6cX3hTU.clouddn.com/70e8d84cadcc6de6e746.mp3",
-          name: "Hole in the wall",
-          author: "Moses Gunn Collective",
-          album: "Mercy Mountain",
-          cover: "http://ac-h6cX3hTU.clouddn.com/61a482e96ea53c5a280d.png"
+      current: {
+        currentMusic: {
+            id: 1,
+            url: "http://ac-h6cX3hTU.clouddn.com/70e8d84cadcc6de6e746.mp3",
+            name: "Hole in the wall",
+            author: "Moses Gunn Collective",
+            album: "Mercy Mountain",
+            cover: "http://ac-h6cX3hTU.clouddn.com/61a482e96ea53c5a280d.png"
+        },
+        currentList: [],
+        currentLoop: 'random'
       },
-      currentList: [],
-      jazzList: [],
-      happyList: [],
-      likeList : [],
-      sunnyList : [],
+      musicList: {
+        jazzList: [],
+        happyList: [],
+        likeList : [],
+        sunnyList : [],
+      },
       objectId: {
         jazz : '5aa74116a22b9d0045985ab2',
         happy : '5aa9348c2f301e0036537558',
@@ -44,6 +49,7 @@ export default {
   },
   methods:{
     AV: function(){
+      console.log(this)
       var APP_ID = 'h6cX3hTUNLmcMuii5PVooVXT-gzGzoHsz';
       var APP_KEY = '5VKLcP36cCBI2YbaAEpV8dy0';
 
@@ -59,24 +65,38 @@ export default {
           list.push(playList.attributes.json.result.tracks[i])
           list[i].url = `http://music.163.com/song/media/outer/url?id=${list[i].id}.mp3`
         }
-        this.currentList = [...this.likeList]
+        this.current.currentList = [...this.musicList.likeList]
       }, function (error) {
         console.log(error)
       })
       
     },
     getJazz: function(){
-      this.getPlayList(this.objectId.jazz,this.jazzList)
+      this.getPlayList(this.objectId.jazz,this.musicList.jazzList)
     },
     getHappy: function(){
-      this.getPlayList(this.objectId.happy,this.happyList)
+      this.getPlayList(this.objectId.happy,this.musicList.happyList)
     },
     getLike: function(){
-      this.getPlayList(this.objectId.like,this.likeList)
+      this.getPlayList(this.objectId.like,this.musicList.likeList)
     },
     getsunny: function(){
-      this.getPlayList(this.objectId.sunny,this.sunnyList)
+      this.getPlayList(this.objectId.sunny,this.musicList.sunnyList)
     },
+    changeFunction: function(fn){
+      switch (fn) {
+        case 'random':
+          console.log(this.current.currentLoop) 
+          this.current.currentLoop = 'random'
+          break;
+        case 'singleLoop':
+          this.current.currentLoop = 'singleLoop'
+          break;
+        case 'listLoop':
+          this.current.currentLoop = 'listLoop'
+          break;
+      }  
+    }
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <div class="hiddenScroll">
-        <div class="disc" v-for="music in musicList" :key='music.url'>
+        <div class="disc" v-for="music in list" :key='music.url'>
             <img :src="music.album.blurPicUrl" @click="changeMusic(music)">
             <div class="about">
                 <div class="name">{{ music.name }}</div>
@@ -12,10 +12,10 @@
 
 <script>
 export default {
-    props:['currentMusic','happyList','jazzList','likeList','currentList','sunnyList'],
+    props:['current','musicList'],
     data(){
         return{
-            musicList : []
+            list : []
         }
     },
     mounted(){
@@ -23,47 +23,47 @@ export default {
     },
     methods: {
         start: function(){
-            this.currentList.splice(0,this.currentList.length)
-            this.musicList = [...this.likeList]
-            for(let i = 0;i<this.likeList.length;i++){
-                this.currentList[i] = this.likeList[i]
+            this.current.currentList.splice(0,this.current.currentList.length)
+            this.list = [...this.musicList.likeList]
+            for(let i = 0;i<this.musicList.likeList.length;i++){
+                this.current.currentList[i] = this.musicList.likeList[i]
             }
         },
         changeMusic: function(music){
-            this.currentMusic.cover = music.album.blurPicUrl
-            this.currentMusic.url = music.url
-            this.currentMusic.name = music.name
-            this.currentMusic.author = music.artists[0].name
+            this.current.currentMusic.cover = music.album.blurPicUrl
+            this.current.currentMusic.url = music.url
+            this.current.currentMusic.name = music.name
+            this.current.currentMusic.author = music.artists[0].name
         },
     },
     beforeRouteUpdate (to,from,next) {
         switch(to.params.id){
             case 'like' :
-                this.musicList = [...this.likeList]
-                this.currentList.splice(0,this.currentList.length)
-                for(let i = 0;i<this.likeList.length;i++){
-                    this.currentList[i] = this.likeList[i]
+                this.list = [...this.musicList.likeList]
+                this.current.currentList.splice(0,this.current.currentList.length)
+                for(let i = 0;i<this.musicList.likeList.length;i++){
+                    this.current.currentList[i] = this.musicList.likeList[i]
                 }
                 break
             case 'jazz' :
-                this.musicList = [...this.jazzList]
-                this.currentList.splice(0,this.currentList.length)
-                for(let i = 0;i<this.jazzList.length;i++){
-                    this.currentList[i] = this.jazzList[i]
+                this.list = [...this.musicList.jazzList]
+                this.current.currentList.splice(0,this.current.currentList.length)
+                for(let i = 0;i<this.musicList.jazzList.length;i++){
+                    this.current.currentList[i] = this.musicList.jazzList[i]
                 }
                 break
             case 'happy' :
-                this.musicList = [...this.happyList]
-                this.currentList.splice(0,this.currentList.length)
-                for(let i = 0;i<this.happyList.length;i++){
-                    this.currentList[i] = this.happyList[i]
+                this.list = [...this.musicList.happyList]
+                this.current.currentList.splice(0,this.current.currentList.length)
+                for(let i = 0;i<this.musicList.happyList.length;i++){
+                    this.current.currentList[i] = this.musicList.happyList[i]
                 }
                 break
             case 'sunny' :
-                this.musicList = [...this.sunnyList]
-                this.currentList.splice(0,this.currentList.length)
-                for(let i = 0;i<this.sunnyList.length;i++){
-                    this.currentList[i] = this.sunnyList[i]
+                this.list = [...this.musicList.sunnyList]
+                this.current.currentList.splice(0,this.current.currentList.length)
+                for(let i = 0;i<this.musicList.sunnyList.length;i++){
+                    this.current.currentList[i] = this.musicList.sunnyList[i]
                 }
                 break
         }

@@ -6,14 +6,14 @@
                 <router-link to="/Album/happy"><li class="tag">HAPPY</li></router-link>
                 <router-link to="/Album/sunny"><li class="tag">SUNNY</li></router-link>
         </ul>
-        <router-view :sunnyList="sunnyList" :currentList="currentList" :currentMusic="currentMusic" :jazzList="jazzList" :likeList="likeList" :happyList="happyList"/>
+        <router-view v-bind:musicList="musicList" v-bind:current="current"/>
   </div>
 </template>
 
 <script>
 import List from './Album/List'
 export default {
-    props:['currentMusic','happyList','jazzList','likeList','currentList','sunnyList'],
+    props:['current','musicList'],
     data(){
         return{
             likeShow : true,

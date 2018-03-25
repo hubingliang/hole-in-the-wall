@@ -1,14 +1,16 @@
 <template>
   <div class="controllerBox animated fadeInLeft">
-        <svg class="loop icon" aria-hidden="true">
-            <use xlink:href="#icon-yuanxunhuanbofang"></use>
+        <svg class="loop icon" aria-hidden="true" @click="changeLoop">
+            <use xlink:href="#icon-suijibofang" v-show="randomShow"></use>
+            <use xlink:href="#icon-danquxunhuan" v-show="singleShow"></use>
+            <use xlink:href="#icon-yuanxunhuanbofang" v-show="listShow"></use>
         </svg>
-      <div class="controller">
-          <div class="item" v-show="listLoop">
+      <div class="currentMusic">
+          <div class="item">
                 
                 <div class="name">列表循环</div>
           </div>
-          <div class="item" v-show="singleLoop">
+          <div class="item">
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-yuanxunhuanbofang"></use>
                 </svg>
@@ -32,13 +34,14 @@
 
 <script>
 export default {
+    props:['nextMusic'],
     data(){
         return{
-            listLoop: true,
-            singleLoop: true,
-            random: true,
-            loops: ['random','singleLoop','listLoop'],
-            currentLoop: 'random'
+            listShow: false,
+            singleShow: false,
+            randomShow: true,
+            loops: ['randomShow','singleShow','listShow'],
+            currentLoop: 'randomShow',
         }
     },
     mounted(){
@@ -46,47 +49,85 @@ export default {
     },
     methods:{
         changeLoop: function(){
-            let { styler, spring, listen, pointer, value } = window.popmotion
-            let disc = document.querySelector('.loop')
-            let divStyler = styler(disc)
-            let ballXY = value({ x: 0, y: 0 }, divStyler.set)
-            listen(disc, 'mousedown touchstart')
-                .start((e) => {
-                    e.preventDefault()
-                    pointer(ballXY.get()).start(ballXY)
-                })
-
-            listen(document, 'mouseup touchend')
-                .start(() => {
-                    let endX = ballXY.get().x
-                    let endY = ballXY.get().y
-                    let i = this.loops.findIndex((value,index,arr)=>{
-                        return value === this.currentLoop
-                    })
-                    switch (i) {
-                        case 0:
-                            
-                            break;
+            var i = this.loops.findIndex((value,index,arr)=>{
+                return value === this.currentLoop
+            })
+            switch (i) {
+                case 0:
+                    this.randomShow = true
+                    this.singleShow = false
+                    this.listShow = false
+                    this.$emit('changeFunction','random')
+                    break;
+                case 1:
+                    this.randomShow = false
+                    this.singleShow = true
+                    this.listShow = false
+                    this.$emit('changeFunction','singleLoop')
+                    break;
+                case 2:
                     
-                        default:
-                            break;
-                    }
-                    if(i === 2){
-                        this.currentLoop = this.loops[0]
-                    }else{
-                        this.currentLoop = this.loops[i+1]
-                    }
-                    console.log(this.currentLoop)
-                    spring({
-                        from: ballXY.get(),
-                        velocity: ballXY.getVelocity(),
-                        to: { x: 0, y: 0 },
-                        stiffness: 200,
-                        // mass: 1,
-                        // damping: 10
-                    }).start(ballXY)
-                })
+                    this.randomShow = false
+                    this.singleShow = false
+                    this.listShow = true
+                    this.$emit('changeFunction','listLoop')
+                    break;
             }
+            if(i === 2){
+                this.currentLoop = this.loops[0]
+            }else{
+                this.currentLoop = this.loops[i+1]
+            }
+        },
+        random: function(){
+            let musicMumber = this.currentList.length
+            let i = Math.floor(Math.randomShow()*(musicMumber+1))
+            let audio = document.getElementById('audio')  
+            this.currentMusic.cover = this.currentList[i].album.blurPicUrl
+            this.currentMusic.url = `http://music.163.com/song/media/outer/url?id=${this.currentList[i].id}.mp3`
+            this.currentMusic.name = this.currentList[i].name
+            this.currentMusic.author = this.currentList[i].artists[0].name
+            setTimeout(() => {
+                audio.play()
+                this.rotate = true
+                this.playing = true
+            }, 500);
+        },
+        singleLoop: function(){
+            let i = this.currentList.findIndex((value,index,arr)=>{
+                return value === this.currentMusic
+            })
+            let audio = document.getElementById('audio')  
+            this.currentMusic.cover = this.currentList[i].album.blurPicUrl
+            this.currentMusic.url = `http://music.163.com/song/media/outer/url?id=${this.currentList[i].id}.mp3`
+            this.currentMusic.name = this.currentList[i].name
+            this.currentMusic.author = this.currentList[i].artists[0].name
+            setTimeout(() => {
+                audio.play()
+                this.rotate = true
+                this.playing = true
+            }, 500);
+        },
+        listLoop: function(){
+            var i = this.currentList.findIndex((value,index,arr)=>{
+                return value === this.currentMusic
+            })
+            if(i = this.currentList.length){
+                i = 0
+            }else{
+                i = i + 1
+            }
+            let audio = document.getElementById('audio')  
+            this.currentMusic.cover = this.currentList[i].album.blurPicUrl
+            this.currentMusic.url = `http://music.163.com/song/media/outer/url?id=${this.currentList[i].id}.mp3`
+            this.currentMusic.name = this.currentList[i].name
+            this.currentMusic.author = this.currentList[i].artists[0].name
+            setTimeout(() => {
+                audio.play()
+                this.rotate = true
+                this.playing = true
+            }, 500)
+        },
     }
 }
 </script>
@@ -94,10 +135,10 @@ export default {
 
 <style lang="less" scoped>
 .icon {
-       width: 1em; height: 1em;
-       vertical-align: -0.15em;
-       fill: currentColor;
-       overflow: hidden;
+    width: 1em; height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
 }
 .controllerBox{
     width: 430px;
@@ -118,7 +159,7 @@ export default {
         border-radius: 50%;
         background: rgba(255,255,255,0.7);
     }
-    .controller{
+    .currentMusic{
         display: flex;
         flex-direction: column;
         //justify-content: center;
