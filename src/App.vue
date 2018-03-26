@@ -43,9 +43,7 @@ export default {
   watch: {
     'current.currentMusic.cover': function(){
       var imgEl = document.getElementById('cover')
-      let rgb = this.getAverageRGB(imgEl)
-      console.log(rgb)
-      document.body.style.backgroundColor = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')'
+      this.getAverageRGB(imgEl)
     }
   },
   mounted(){
@@ -105,7 +103,14 @@ export default {
     },
     getAverageRGB: function(imgEl) {
       var colorThief = new ColorThief();
-      colorThief.getColor(imgEl);
+      let Palette = colorThief.getPalette(imgEl, 8);
+      console.log(Palette)
+      let app = document.getElementById('app'),
+          top = `rgb(${Palette[0][0]}, ${Palette[0][1]}, ${Palette[0][2]})`,
+          second = `rgb(${Palette[1][0]}, ${Palette[1][1]}, ${Palette[1][2]})`
+      app.style.background = `linear-gradient(to bottom, ${top}, ${second})`
+      console.log(app.style.background)
+      
     }
   }
 }
@@ -130,10 +135,5 @@ a{
   background: linear-gradient(to bottom, #3A6073, #16222A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   overflow: hidden;
-}
-.box{
-  width: 200px;
-  height: 200px;
-  background: red;
 }
 </style>
