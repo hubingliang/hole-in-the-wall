@@ -1,57 +1,42 @@
 <template>
   <div class="controllerBox animated fadeInLeft">
-        <svg class="loop icon" aria-hidden="true" @click="changeLoop">
+        <svg class="loop icon" aria-hidden="true" @click="changeLoop(current.currentLoop)">
             <use xlink:href="#icon-suijibofang" v-show="randomShow"></use>
             <use xlink:href="#icon-danquxunhuan" v-show="singleShow"></use>
             <use xlink:href="#icon-yuanxunhuanbofang" v-show="listShow"></use>
         </svg>
-      <div class="currentMusic">
-          <div class="item">
-                
-                <div class="name">列表循环</div>
-          </div>
-          <div class="item">
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-yuanxunhuanbofang"></use>
-                </svg>
-                <div class="name"></div>
-          </div>
-          <div class="item">
-              <div class="icon"></div>
-              <div class="name"></div>
-          </div>
-          <div class="item">
-              <div class="icon"></div>
-              <div class="name"></div>
-          </div>
-          <div class="item">
-              <div class="icon"></div>
-              <div class="name"></div>
-          </div>
-      </div>
+        <div class="describe">
+            <img :src="current.currentMusic.cover" alt="" class="img">
+            <div class="name">{{ current.currentMusic.name }}</div>
+            <div class="author">{{ current.currentMusic.author }}</div>
+        </div>
   </div>
 </template>
 
 <script>
 export default {
-    props:['nextMusic'],
+    props:['nextMusic','current'],
     data(){
         return{
             listShow: false,
             singleShow: false,
             randomShow: true,
-            loops: ['randomShow','singleShow','listShow'],
-            currentLoop: 'randomShow',
+            loops: ['random','singleLoop','listLoop'],
         }
     },
     mounted(){
         this.changeLoop()
     },
-    methods:{
-        changeLoop: function(){
+    methods:{ 
+        changeLoop: function(currentLoop){
             var i = this.loops.findIndex((value,index,arr)=>{
-                return value === this.currentLoop
+                return value === currentLoop
             })
+            if(i === 2){
+                i = 0
+            }else{
+                i = i + 1
+            }
             switch (i) {
                 case 0:
                     this.randomShow = true
@@ -66,17 +51,11 @@ export default {
                     this.$emit('changeFunction','singleLoop')
                     break;
                 case 2:
-                    
                     this.randomShow = false
                     this.singleShow = false
                     this.listShow = true
                     this.$emit('changeFunction','listLoop')
                     break;
-            }
-            if(i === 2){
-                this.currentLoop = this.loops[0]
-            }else{
-                this.currentLoop = this.loops[i+1]
             }
         },
         random: function(){
@@ -148,6 +127,7 @@ export default {
     box-shadow: -28px 3px 227px 0px rgba(0,0,0,0.48);
     order: -1;
     position: relative;
+    user-select:none;
     .loop{
         position: absolute;
         right: 20px;
@@ -159,30 +139,28 @@ export default {
         border-radius: 50%;
         background: rgba(255,255,255,0.7);
     }
-    .currentMusic{
+    .describe{
+        height: 100%;
+        width: 100%;
         display: flex;
         flex-direction: column;
-        //justify-content: center;
+        justify-content: center;
         align-items: center;
-        padding: 100px 0px;
-        .item{
-            color: rgb(90, 82, 233);
-            display: flex;
-            align-items: center; 
-            margin-bottom: 20px;
-            .icon{
-                font-size: 1px;
-                padding: 10px;
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                background: rgba(255,255,255,0.7);
-            }
-            .name{
-                color: white;
-                font-size: 20px;
-                margin-left: 20px;
-            }
+        //padding: 100px 0px;
+        color: white;
+        font-weight: bold;
+        img{
+            width: 200px;
+            height: 200px;
+        }
+        .name{
+            margin: 50px 20px 20px 20px;
+            font-size: 35px;
+            
+        }
+        .author{
+            font-size: 20px;
+            margin-bottom: 80px;
         }
     }
 }

@@ -40,6 +40,14 @@ export default {
   components: {
     Player
   },
+  watch: {
+    'current.currentMusic.cover': function(){
+      var imgEl = document.getElementById('cover')
+      let rgb = this.getAverageRGB(imgEl)
+      console.log(rgb)
+      document.body.style.backgroundColor = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')'
+    }
+  },
   mounted(){
     this.AV()
     this.getHappy()
@@ -49,7 +57,6 @@ export default {
   },
   methods:{
     AV: function(){
-      console.log(this)
       var APP_ID = 'h6cX3hTUNLmcMuii5PVooVXT-gzGzoHsz';
       var APP_KEY = '5VKLcP36cCBI2YbaAEpV8dy0';
 
@@ -86,7 +93,6 @@ export default {
     changeFunction: function(fn){
       switch (fn) {
         case 'random':
-          console.log(this.current.currentLoop) 
           this.current.currentLoop = 'random'
           break;
         case 'singleLoop':
@@ -96,6 +102,10 @@ export default {
           this.current.currentLoop = 'listLoop'
           break;
       }  
+    },
+    getAverageRGB: function(imgEl) {
+      var colorThief = new ColorThief();
+      colorThief.getColor(imgEl);
     }
   }
 }
@@ -115,9 +125,10 @@ a{
   display: flex;
   width: 100vw;
   height: 100vh;
-  background-image: url(./assets/BG.jpg);
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+  background: #16222A;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #3A6073, #16222A);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #3A6073, #16222A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   overflow: hidden;
 }
 .box{

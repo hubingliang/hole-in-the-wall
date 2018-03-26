@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Player from '@/components/Player'
 import Album from '@/components/Album'
 import List from '@/components/Album/List'
-import Controller from '@/components/Controller'
+import Describe from '@/components/Describe'
 
 Vue.use(Router)
 
@@ -18,9 +18,9 @@ export default new Router({
       ]
     },
     {
-      path: '/Controller',
-      name: 'Controller',
-      component: Controller,
+      path: '/Describe',
+      name: 'Describe',
+      component: Describe,
     }
   ]
 })

@@ -39,11 +39,12 @@ export default {
     disc: function(){
       let { styler, spring, listen, pointer, value } = window.popmotion
       let disc = document.querySelector('.discBox')
+      let player = document.querySelector('.player')
       let divStyler = styler(disc)
       let ballXY = value({ x: 0, y: 0 }, divStyler.set)
       let homePage = window.location.href
       let albumPage = window.location.href + 'Album/like'
-      let LyricPage = window.location.href + 'Controller'
+      let LyricPage = window.location.href + 'Describe'
       let audio = document.getElementById('audio')  
       audio.onended = ()=> {
         this.nextMusic()
@@ -54,7 +55,7 @@ export default {
           pointer(ballXY.get()).start(ballXY)
         })
 
-      listen(document, 'mouseup touchend')
+      listen(player, 'mouseup touchend')
         .start(() => {
           let endX = ballXY.get().x
           let endY = ballXY.get().y
@@ -113,7 +114,7 @@ export default {
             audio.play()
             this.rotate = true
             this.playing = true
-        }, 500);
+        }, 500)
     },
     singleLoop: function(){
         let audio = document.getElementById('audio')  
@@ -122,7 +123,8 @@ export default {
             audio.play()
             this.rotate = true
             this.playing = true
-        }, 0);
+        }, 0)
+        console.log('singleLoop')
     },
     listLoop: function(){
         console.log(this.current.currentList.length)
@@ -133,7 +135,6 @@ export default {
             i = i + 1
         }
         this.currentIndex = i
-        console.log(i)
         let audio = document.getElementById('audio')  
         this.current.currentMusic.cover = this.current.currentList[i].album.blurPicUrl
         this.current.currentMusic.url = `http://music.163.com/song/media/outer/url?id=${this.current.currentList[i].id}.mp3`
@@ -143,7 +144,8 @@ export default {
             audio.play()
             this.rotate = true
             this.playing = true
-        }, 500); 
+        }, 500)
+        console.log('listLoop')
     },
   }
 }
