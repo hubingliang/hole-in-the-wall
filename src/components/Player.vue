@@ -3,7 +3,7 @@
     <div class="discBox" draggable="true">
         <img class="disc" src="../assets/disc-plus.png" alt="">
         <img class="disc_light" :class="{rotate: rotate ,norotate: !rotate}" src="../assets/disc_light-plus.png" alt="">
-        <img crossorigin="anonymous" class="cover" :class="{rotate: rotate ,norotate: !rotate}" id="cover" :src="current.currentMusic.cover" alt="">
+        <img class="cover" :class="{rotate: rotate ,norotate: !rotate}" id="cover" :src="current.currentMusic.cover" alt="">
     </div>
     <audio id="audio" :src="current.currentMusic.url"></audio>
   </div>
@@ -16,7 +16,8 @@ export default {
     return {
       playing: false,
       rotate: false,
-      currentIndex: 0
+      currentIndex: 0,
+      lastIndex: [0,0],
     }
   },
   props:['current'],
@@ -62,8 +63,12 @@ export default {
           if(endX > 100){
             window.location.href = albumPage
           }else if(Math.abs(endX) < 100 && endX !== 0){
-            if(Math.abs(endY) > 150){
+            if(endY > 150){
               this.nextMusic()
+              this.rotate = true
+              this.playing = true
+            }else if(endY < -150){
+              this.lastMusic(this.lastIndex)
               this.rotate = true
               this.playing = true
             }else{
@@ -103,8 +108,9 @@ export default {
     },
     random: function(){
         let musicMumber = this.current.currentList.length
+        this.lastIndex[0] = this.lastIndex[1]
         let i = Math.floor(Math.random()*(musicMumber+1))
-        this.currentIndex = i
+        this.lastIndex[1] = i
         let audio = document.getElementById('audio')  
         this.current.currentMusic.cover = this.current.currentList[i].album.blurPicUrl
         this.current.currentMusic.url = `http://music.163.com/song/media/outer/url?id=${this.current.currentList[i].id}.mp3`
@@ -124,17 +130,15 @@ export default {
             this.rotate = true
             this.playing = true
         }, 0)
-        console.log('singleLoop')
     },
     listLoop: function(){
-        console.log(this.current.currentList.length)
-        var i = this.currentIndex
+        var i = this.lastIndex
         if(i === this.current.currentList.length){
             i = 0
         }else{
             i = i + 1
         }
-        this.currentIndex = i
+        this.lastIndex = i
         let audio = document.getElementById('audio')  
         this.current.currentMusic.cover = this.current.currentList[i].album.blurPicUrl
         this.current.currentMusic.url = `http://music.163.com/song/media/outer/url?id=${this.current.currentList[i].id}.mp3`
@@ -145,8 +149,20 @@ export default {
             this.rotate = true
             this.playing = true
         }, 500)
-        console.log('listLoop')
     },
+    lastMusic:function(lastIndex){
+      let i = lastIndex[0]
+      let audio = document.getElementById('audio')  
+      this.current.currentMusic.cover = this.current.currentList[i].album.blurPicUrl
+      this.current.currentMusic.url = `http://music.163.com/song/media/outer/url?id=${this.current.currentList[i].id}.mp3`
+      this.current.currentMusic.name = this.current.currentList[i].name
+      this.current.currentMusic.author = this.current.currentList[i].artists[0].name
+      setTimeout(() => {
+          audio.play()
+          this.rotate = true
+          this.playing = true
+      }, 500)
+    }
   }
 }
 </script>
@@ -191,6 +207,12 @@ export default {
         height: 292px;
         position: absolute;
         border-radius: 50%;      
+    }
+    #hidden{
+      width: 292px;
+      height: 292px;
+      position: absolute;
+      border-radius: 50%;  
     }
     .rotate{
         animation: circle 20s infinite linear;

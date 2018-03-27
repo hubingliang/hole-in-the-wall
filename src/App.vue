@@ -40,12 +40,13 @@ export default {
   components: {
     Player
   },
-  watch: {
-    'current.currentMusic.cover': function(){
-      var imgEl = document.getElementById('cover')
-      this.getAverageRGB(imgEl)
-    }
-  },
+  // watch: {
+  //   'current.currentMusic.cover': function(){
+  //     // var img = document.getElementById('cover')
+  //     // // img.crossOrigin = "Anonymous"
+  //     // this.getAverageRGB(img)
+  //   }
+  // },
   mounted(){
     this.AV()
     this.getHappy()
@@ -101,22 +102,17 @@ export default {
           break;
       }  
     },
-    getAverageRGB: function(imgEl) {
-      var colorThief = new ColorThief();
-      let Palette = colorThief.getPalette(imgEl, 8);
-      console.log(Palette)
-      let app = document.getElementById('app'),
-          top = `rgb(${Palette[0][0]}, ${Palette[0][1]}, ${Palette[0][2]})`,
-          second = `rgb(${Palette[1][0]}, ${Palette[1][1]}, ${Palette[1][2]})`
-      app.style.background = `linear-gradient(to bottom, ${top}, ${second})`
-      console.log(app.style.background)
-      
-    }
   }
 }
 </script>
 
 <style>
+#hidden{
+  width: 292px;
+  height: 292px;
+  position: absolute;
+  border-radius: 50%;  
+}
 *{
   box-sizing: border-box;
   margin: 0;
@@ -124,6 +120,9 @@ export default {
 }
 a{
   text-decoration: none;
+}
+body{
+  overflow: hidden;
 }
 #app {
   position: relative;
