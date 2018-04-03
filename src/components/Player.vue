@@ -2,7 +2,7 @@
   <div class="player animated fadeIn">
     <div class="discBox" draggable="true">
         <img class="disc" src="../assets/disc-plus.png" alt="">
-        <img class="disc_light" :class="{rotate: rotate ,norotate: !rotate}" src="../assets/disc_light-plus.png" alt="">
+        <img class="disc_light" :class="{rotate: rotate ,norotate: !rotate}" src="../assets/disc_light-plus.png" alt="" id="disc">
         <img class="cover" :class="{rotate: rotate ,norotate: !rotate}" id="cover" :src="current.currentMusic.cover" alt="">
     </div>
     <audio id="audio" :src="current.currentMusic.url"></audio>

@@ -34,6 +34,16 @@ export default {
             this.current.currentMusic.url = music.url
             this.current.currentMusic.name = music.name
             this.current.currentMusic.author = music.artists[0].name
+            let audio = document.getElementById('audio')
+            let disc = document.getElementById('disc')
+            let cover = document.getElementById('cover')  
+            setTimeout(() => {
+                audio.play()
+            }, 0)
+            audio.onplay = function() {
+                disc.className = 'disc_light rotate'
+                cover.className = 'cover rotate'
+            };
         },
     },
     beforeRouteUpdate (to,from,next) {
@@ -107,6 +117,7 @@ export default {
             flex-direction: column;
             justify-content: center;
             height: 100px;
+            max-width: 230px;
             margin-left: 40px;
             color: white;
             .author{
