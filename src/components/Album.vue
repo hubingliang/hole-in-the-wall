@@ -5,6 +5,7 @@
                 <router-link to="/Album/jazz"><li class="tag">JAZZ</li></router-link>
                 <router-link to="/Album/happy"><li class="tag">HAPPY</li></router-link>
                 <router-link to="/Album/sunny"><li class="tag">SUNNY</li></router-link>
+                <router-link to="/Album/english"><li class="tag">ENGLISH</li></router-link>
         </ul>
         <router-view v-bind:musicList="musicList" v-bind:current="current"/>
   </div>

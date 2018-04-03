@@ -28,12 +28,14 @@ export default {
         happyList: [],
         likeList : [],
         sunnyList : [],
+        englishList: []
       },
       objectId: {
         jazz : '5aa74116a22b9d0045985ab2',
         happy : '5aa9348c2f301e0036537558',
         like : '5aabdacd9f545448cf28e36e',
-        sunny : '5aaf95549f5454250d9a8b12'
+        sunny : '5aaf95549f5454250d9a8b12',
+        english: '5ac3873bac502e0063c10857'
       }
     }
   },
@@ -53,6 +55,7 @@ export default {
     this.getJazz()
     this.getLike()
     this.getsunny()
+    this.getEnglish()
   },
   methods:{
     AV: function(){
@@ -79,6 +82,9 @@ export default {
     },
     getJazz: function(){
       this.getPlayList(this.objectId.jazz,this.musicList.jazzList)
+    },
+    getEnglish: function(){
+      this.getPlayList(this.objectId.english,this.musicList.englishList)
     },
     getHappy: function(){
       this.getPlayList(this.objectId.happy,this.musicList.happyList)
