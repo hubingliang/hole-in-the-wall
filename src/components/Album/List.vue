@@ -75,6 +75,7 @@ export default {
                 for(let i = 0;i<this.musicList.sunnyList.length;i++){
                     this.current.currentList[i] = this.musicList.sunnyList[i]
                 }
+                break
             case 'english' :
                 this.list = [...this.musicList.englishList]
                 this.current.currentList.splice(0,this.current.currentList.length)
