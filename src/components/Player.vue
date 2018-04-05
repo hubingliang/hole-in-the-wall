@@ -61,7 +61,11 @@ export default {
           let endX = ballXY.get().x
           let endY = ballXY.get().y
           if(endX > 100){
-            window.location.href = albumPage
+            if(window.location.href === LyricPage){
+              this.$router.push('/')
+            }else{
+              this.$router.push('/Album/like')
+            }
           }else if(Math.abs(endX) < 100 && endX !== 0){
             if(endY > 150){
               this.nextMusic()
@@ -76,12 +80,10 @@ export default {
             }
           }else if(endX < -100){
             if(window.location.href === albumPage){
-              window.location.href = homePage
+              this.$router.push('/')
             }else{
-              window.location.href = LyricPage
+              this.$router.push('/Describe')
             }
-          }else if(endY > 300){
-            
           }
           spring({
             from: ballXY.get(),
