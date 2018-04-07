@@ -17,9 +17,6 @@ export default {
     props:['current','musicList'],
     data(){
         return{
-            likeShow : true,
-            jazzShow : false,
-            happyShow : false,
         }
     },
     components: {

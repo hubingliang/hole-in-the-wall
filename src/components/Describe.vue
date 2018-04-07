@@ -18,14 +18,14 @@ export default {
     props:['nextMusic','current'],
     data(){
         return{
-            listShow: false,
+            listShow: false,    
             singleShow: false,
-            randomShow: true,
+            randomShow: false,
             loops: ['random','singleLoop','listLoop'],
         }
     },
     mounted(){
-        this.changeLoop()
+        this.resetLoop()
     },
     methods:{ 
         changeLoop: function(currentLoop){
@@ -107,6 +107,19 @@ export default {
                 this.playing = true
             }, 500)
         },
+        resetLoop: function(){
+            switch (this.current.currentLoop) {
+                case 'random':
+                    this.randomShow = true
+                    break;
+                case 'singleLoop':
+                    this.singleShow = true
+                    break;
+                case 'listLoop':
+                    this.listShow = true
+                    break;
+            }  
+        }
     }
 }
 </script>

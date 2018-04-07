@@ -2,8 +2,8 @@
   <div class="player animated fadeIn">
     <div class="discBox" draggable="true">
         <img class="disc" src="../assets/disc-plus.png" alt="">
-        <img class="disc_light" :class="{rotate: rotate ,norotate: !rotate}" src="../assets/disc_light-plus.png" alt="" id="disc">
-        <img class="cover" :class="{rotate: rotate ,norotate: !rotate}" id="cover" :src="current.currentMusic.cover" alt="">
+        <img class="disc_light" :class="{rotate: this.$store.state.currentPlay ,norotate: !this.$store.state.currentPlay}" src="../assets/disc_light-plus.png" alt="" id="disc">
+        <img class="cover" :class="{rotate: this.$store.state.currentPlay ,norotate: !this.$store.state.currentPlay}" id="cover" :src="current.currentMusic.cover" alt="">
     </div>
     <audio id="audio" :src="current.currentMusic.url"></audio>
   </div>
@@ -14,10 +14,8 @@ export default {
   name: 'Player',
   data () {
     return {
-      playing: false,
-      rotate: false,
       currentIndex: 0,
-      lastIndex: [0,0],
+      lastIndex: 0,
     }
   },
   props:['current'],
@@ -27,15 +25,13 @@ export default {
   methods:{
     play: function(){
       let audio = document.getElementById('audio')  
-      if(this.playing === false){
-          this.rotate = true
-          this.playing = true
-          audio.play()
-      }else{
-          this.rotate = false
-          this.playing = false
-          audio.pause()
-      }
+          if(this.$store.state.currentPlay){
+            audio.pause()
+            this.$store.commit('changePlay',false)
+          }else{
+            audio.play()
+            this.$store.commit('changePlay',true)
+          }
     },
     disc: function(){
       let { styler, spring, listen, pointer, value } = window.popmotion
@@ -44,7 +40,7 @@ export default {
       let divStyler = styler(disc)
       let ballXY = value({ x: 0, y: 0 }, divStyler.set)
       let homePage = window.location.href
-      let albumPage = window.location.href + 'Album/like'
+      let albumPage = window.location.href + 'Album'
       let LyricPage = window.location.href + 'Describe'
       let audio = document.getElementById('audio')  
       audio.onended = ()=> {
@@ -64,17 +60,15 @@ export default {
             if(window.location.href === LyricPage){
               this.$router.push('/')
             }else{
-              this.$router.push('/Album/like')
+              this.$router.push(`/Album/${this.current.currentListName}`)
             }
           }else if(Math.abs(endX) < 100 && endX !== 0){
             if(endY > 150){
               this.nextMusic()
-              this.rotate = true
-              this.playing = true
+              this.$store.commit('changePlay',true)
             }else if(endY < -150){
               this.lastMusic(this.lastIndex)
-              this.rotate = true
-              this.playing = true
+              this.$store.commit('changePlay',true)
             }else{
               this.play()
             }
@@ -120,8 +114,7 @@ export default {
         this.current.currentMusic.author = this.current.currentList[i].artists[0].name
         setTimeout(() => {
             audio.play()
-            this.rotate = true
-            this.playing = true
+            this.$store.commit('changePlay',true)
         }, 500)
     },
     singleLoop: function(){
@@ -129,8 +122,7 @@ export default {
         setTimeout(() => {
             audio.load()
             audio.play()
-            this.rotate = true
-            this.playing = true
+            this.$store.commit('changePlay',true)
         }, 0)
     },
     listLoop: function(){
@@ -148,8 +140,7 @@ export default {
         this.current.currentMusic.author = this.current.currentList[i].artists[0].name
         setTimeout(() => {
             audio.play()
-            this.rotate = true
-            this.playing = true
+            this.$store.commit('changePlay',true)
         }, 500)
     },
     lastMusic:function(lastIndex){
@@ -161,8 +152,7 @@ export default {
       this.current.currentMusic.author = this.current.currentList[i].artists[0].name
       setTimeout(() => {
           audio.play()
-          this.rotate = true
-          this.playing = true
+          this.$store.commit('changePlay',true)
       }, 500)
     }
   }

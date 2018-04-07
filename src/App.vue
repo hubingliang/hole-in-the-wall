@@ -21,7 +21,8 @@ export default {
             cover: "http://ac-h6cX3hTU.clouddn.com/61a482e96ea53c5a280d.png"
         },
         currentList: [],
-        currentLoop: 'random'
+        currentLoop: 'random',
+        currentListName: 'like'
       },
       musicList: {
         jazzList: [],
@@ -42,13 +43,6 @@ export default {
   components: {
     Player
   },
-  // watch: {
-  //   'current.currentMusic.cover': function(){
-  //     // var img = document.getElementById('cover')
-  //     // // img.crossOrigin = "Anonymous"
-  //     // this.getAverageRGB(img)
-  //   }
-  // },
   mounted(){
     this.AV()
     this.getHappy()
@@ -68,6 +62,7 @@ export default {
       });
     },
     getPlayList: function(objectId,list){
+      
       var query = new AV.Query('playList')
       query.get(`${objectId}`).then( (playList) => {
         for(let i = 0;i<playList.attributes.json.result.tracks.length;i++){
@@ -107,6 +102,7 @@ export default {
           this.current.currentLoop = 'listLoop'
           break;
       }  
+      console.log('this.current.currentLoop' ,this.current.currentLoop)
     },
   }
 }

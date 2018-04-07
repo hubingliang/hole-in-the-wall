@@ -40,10 +40,7 @@ export default {
             setTimeout(() => {
                 audio.play()
             }, 0)
-            audio.onplay = function() {
-                disc.className = 'disc_light rotate'
-                cover.className = 'cover rotate'
-            };
+            this.$store.commit('changePlay',true)
         },
     },
     beforeRouteUpdate (to,from,next) {
