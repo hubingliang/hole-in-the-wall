@@ -1,6 +1,6 @@
 <template>
     <div class="hiddenScroll">
-        <div class="disc" v-for="music in list" :key='music.url'>
+        <div class="disc" v-for="music in this.$store.state.currentList" :key='music.url'>
             <img :src="music.album.blurPicUrl" @click="changeMusic(music)">
             <div class="about">
                 <div class="name">{{ music.name }}</div>
@@ -12,105 +12,90 @@
 
 <script>
 export default {
-    props:['current','musicList'],
-    data(){
-        return{
-            list : []
-        }
-    },
-    mounted(){
-        this.start()
-    },
+    props: ["musicData"],
+    mounted() {},
     methods: {
-        start: function(){
-            this.current.currentList.splice(0,this.current.currentList.length)
-            this.list = [...this.musicList.likeList]
-            for(let i = 0;i<this.musicList.likeList.length;i++){
-                this.current.currentList[i] = this.musicList.likeList[i]
-            }
+        resetMusicList: function() {
+            this.current.currentList.splice(0, this.current.currentList.length);
+            this.current.currentList = [...this.musicData.like.musicList];
         },
-        changeMusic: function(music){
-            this.current.currentMusic.cover = music.album.blurPicUrl
-            this.current.currentMusic.url = music.url
-            this.current.currentMusic.name = music.name
-            this.current.currentMusic.author = music.artists[0].name
-            let audio = document.getElementById('audio')
-            let disc = document.getElementById('disc')
-            let cover = document.getElementById('cover')  
+        changeMusic: function(music) {
+            const audio = document.getElementById("audio");
             setTimeout(() => {
-                audio.play()
-            }, 0)
-            this.$store.commit('changePlay',true)
-        },
-    },
-    beforeRouteUpdate (to,from,next) {
-        switch(to.params.id){
-            case 'like' :
-                this.list = [...this.musicList.likeList]
-                this.current.currentList.splice(0,this.current.currentList.length)
-                for(let i = 0;i<this.musicList.likeList.length;i++){
-                    this.current.currentList[i] = this.musicList.likeList[i]
-                }
-                break
-            case 'jazz' :
-                this.list = [...this.musicList.jazzList]
-                this.current.currentList.splice(0,this.current.currentList.length)
-                for(let i = 0;i<this.musicList.jazzList.length;i++){
-                    this.current.currentList[i] = this.musicList.jazzList[i]
-                }
-                break
-            case 'happy' :
-                this.list = [...this.musicList.happyList]
-                this.current.currentList.splice(0,this.current.currentList.length)
-                for(let i = 0;i<this.musicList.happyList.length;i++){
-                    this.current.currentList[i] = this.musicList.happyList[i]
-                }
-                break
-            case 'sunny' :
-                this.list = [...this.musicList.sunnyList]
-                this.current.currentList.splice(0,this.current.currentList.length)
-                for(let i = 0;i<this.musicList.sunnyList.length;i++){
-                    this.current.currentList[i] = this.musicList.sunnyList[i]
-                }
-                break
-            case 'english' :
-                this.list = [...this.musicList.englishList]
-                this.current.currentList.splice(0,this.current.currentList.length)
-                for(let i = 0;i<this.musicList.englishList.length;i++){
-                    this.current.currentList[i] = this.musicList.englishList[i]
-                }
-                break
+                audio.play();
+            }, 0);
+            this.$store.commit("changeMusic", music);
+            this.$store.commit("changePlay", true);
         }
-        next()
+    },
+    beforeRouteUpdate(to, from, next) {
+        switch (to.params.id) {
+            case "like":
+                this.$store.commit(
+                    "changeMusic",
+                    this.musicData.like.musicList
+                );
+                this.$store.commit("changeListName", "like");
+                break;
+            case "jazz":
+                this.$store.commit(
+                    "changeMusic",
+                    this.musicData.jazz.musicList
+                );
+                this.$store.commit("changeListName", "jazz");
+                break;
+            case "happy":
+                this.$store.commit(
+                    "changeMusic",
+                    this.musicData.happy.musicList
+                );
+                this.$store.commit("changeListName", "happy");
+                break;
+            case "sunny":
+                this.$store.commit(
+                    "changeMusic",
+                    this.musicData.sunny.musicList
+                );
+                this.$store.commit("changeListName", "sunny");
+                break;
+            case "english":
+                this.$store.commit(
+                    "changeMusic",
+                    this.musicData.english.musicList
+                );
+                this.$store.commit("changeListName", "english");
+                break;
+        }
+        next();
     }
-}
+};
 </script>
 
 
 <style lang="less" scoped>
-.hiddenScroll{
+.hiddenScroll {
     padding: 40px;
     padding-top: 10px;
     width: 450px;
     overflow: hidden;
     height: calc(100vh - 50px);
     overflow: auto;
-    position: relative; 
-    .disc{
+    position: relative;
+    .disc {
         height: 100px;
         display: flex;
         align-items: center;
         margin-bottom: 20px;
-        img{
+        img {
             width: 80px;
             height: 80px;
             border-radius: 15px;
-            box-shadow: 2px 28px 43px -18px rgba(0,0,0,0.53);
+            box-shadow: 2px 28px 43px -18px rgba(0, 0, 0, 0.53);
         }
-        img:hover{
+        img:hover {
             border: 1px solid white;
         }
-        .about{
+        .about {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -118,7 +103,7 @@ export default {
             max-width: 230px;
             margin-left: 40px;
             color: white;
-            .author{
+            .author {
                 margin-top: 5px;
                 color: white;
             }

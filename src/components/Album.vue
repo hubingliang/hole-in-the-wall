@@ -7,18 +7,14 @@
                 <router-link to="/Album/sunny"><li class="tag">SUNNY</li></router-link>
                 <router-link to="/Album/english"><li class="tag">ENGLISH</li></router-link>
         </ul>
-        <router-view v-bind:musicList="musicList" v-bind:current="current"/>
+        <router-view v-bind:musicData="musicData" v-bind:current="current"/>
   </div>
 </template>
 
 <script>
 import List from './Album/List'
 export default {
-    props:['current','musicList'],
-    data(){
-        return{
-        }
-    },
+    props:['current','musicData'],
     components: {
         List
     },
