@@ -24,13 +24,17 @@ export default {
             setTimeout(() => {
                 audio.play();
             }, 0);
+            this.$store.commit("changeGradient");
             this.$store.commit("changeMusic", music);
             this.$store.commit("changePlay", true);
         }
     },
     beforeRouteUpdate(to, from, next) {
+        const hiddenScroll = document.getElementsByClassName("hiddenScroll")
+        hiddenScroll[0].scrollTo(0,0)
         switch (to.params.id) {
             case "like":
+               
                 this.$store.commit(
                     "changeMusic",
                     this.musicData.like.musicList
@@ -77,7 +81,6 @@ export default {
     padding: 40px;
     padding-top: 10px;
     width: 450px;
-    overflow: hidden;
     height: calc(100vh - 50px);
     overflow: auto;
     position: relative;
