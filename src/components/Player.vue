@@ -102,6 +102,7 @@ export default {
                 this.$store.commit("changePlay", true);
             }, 0);
             audio.onerror = () => this.nextMusic();
+            this.$store.commit("changeGradient");
         },
         random: function() {
             console.log("随机播放");
