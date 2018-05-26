@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import styler from "stylefire";
+import { value, listen, spring, pointer } from "popmotion";
 export default {
     name: "Player",
     data() {
@@ -40,7 +42,6 @@ export default {
             }
         },
         disc: function() {
-            const { styler, spring, listen, pointer, value } = window.popmotion;
             const disc = document.querySelector(".discBox");
             const player = document.querySelector(".player");
             const divStyler = styler(disc);
@@ -105,7 +106,6 @@ export default {
             this.$store.commit("changeGradient");
         },
         random: function() {
-            console.log("随机播放");
             let musicMumber = this.$store.state.currentList.length;
             let i = Math.floor(Math.random() * (musicMumber + 1));
             this.$store.commit("changeMusic", this.$store.state.currentList[i]);
@@ -116,7 +116,6 @@ export default {
                 audio.play();
                 this.$store.commit("changePlay", true);
             }, 0);
-            console.log("单曲循环");
         },
         lastMusic() {
             const audio = document.getElementById("audio");
