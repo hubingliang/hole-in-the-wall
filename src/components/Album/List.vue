@@ -13,7 +13,6 @@
 <script>
 export default {
     props: ["musicData"],
-    mounted() {},
     methods: {
         resetMusicList: function() {
             this.current.currentList.splice(0, this.current.currentList.length);
@@ -34,7 +33,6 @@ export default {
         hiddenScroll[0].scrollTo(0,0)
         switch (to.params.id) {
             case "like":
-               
                 this.$store.commit(
                     "changeMusic",
                     this.musicData.like.musicList
@@ -68,6 +66,13 @@ export default {
                     this.musicData.english.musicList
                 );
                 this.$store.commit("changeListName", "english");
+                break;
+            case "fingerStyle":
+                this.$store.commit(
+                    "changeMusic",
+                    this.musicData.fingerStyle.musicList
+                );
+                this.$store.commit("changeListName", "fingerStyle");
                 break;
         }
         next();

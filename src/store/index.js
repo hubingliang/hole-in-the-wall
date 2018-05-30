@@ -73,16 +73,7 @@ export default new Vuex.Store({
         },
         changeGradient(state) {
             const app = document.getElementById('app')
-            app.style.background = `${state.gradients[Math.floor(Math.random() * state.gradients.length + 1)-1]}`
-            console.log(Math.floor(Math.random() * state.gradients.length + 1)-1) 
-        }
-    },
-    getters: {
-        doneTodos: state => {
-            return state.count
-        },
-        doneTodosCount: (state, getters) => {
-            return getters.doneTodos.length
+            app.style.background = `${state.gradients[Math.floor(Math.random() * state.gradients.length + 1) - 1]}`
         }
     }
 })

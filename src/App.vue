@@ -34,14 +34,16 @@ export default {
                 happyList: [],
                 likeList: [],
                 sunnyList: [],
-                englishList: []
+                englishList: [],
+                fingerStyleList: []
             },
             objectId: {
                 jazz: "5aa74116a22b9d0045985ab2",
                 happy: "5aa9348c2f301e0036537558",
                 like: "5aabdacd9f545448cf28e36e",
                 sunny: "5aaf95549f5454250d9a8b12",
-                english: "5ac3873bac502e0063c10857"
+                english: "5ac3873bac502e0063c10857",
+                fingerStyleList: "5b0e975044d90400681927c4"
             },
             musicData: {
                 jazz: {
@@ -63,6 +65,10 @@ export default {
                 english: {
                     id: "5ac3873bac502e0063c10857",
                     musicList: []
+                },
+                fingerStyle: {
+                    id: "5b0e975044d90400681927c4",
+                    musicList: []
                 }
             }
         };
@@ -73,7 +79,7 @@ export default {
     mounted() {
         this.AV();
         this.getMusicList();
-        this.resetGradient()
+        this.resetGradient();
     },
     methods: {
         AV() {
@@ -111,7 +117,7 @@ export default {
                 this.getPlayList(v);
             }
         },
-        resetGradient(){
+        resetGradient() {
             this.$store.commit("changeGradient");
         }
     }
