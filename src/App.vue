@@ -18,10 +18,10 @@ export default {
                         "http://ac-h6cX3hTU.clouddn.com/70e8d84cadcc6de6e746.mp3",
                     name: "Hole in the wall",
                     author: "Moses Gunn Collective",
-                    album: {
-                        blurPicUrl:
+                    al: {
+                        picUrl:
                             "http://ac-h6cX3hTU.clouddn.com/61a482e96ea53c5a280d.png",
-                        album: "Mercy Mountain"
+                        al: "Mercy Mountain"
                     },
                     artists: [{ name: "Moses Gunn Collective" }]
                 },
@@ -100,7 +100,7 @@ export default {
                 playList => {
                     obj.musicList = [
                         ...list,
-                        ...playList.attributes.json.result.tracks
+                        ...playList.attributes.json.playlist.tracks
                     ];
                     this.$store.commit(
                         "changeMusic",

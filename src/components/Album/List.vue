@@ -1,10 +1,10 @@
 <template>
     <div class="hiddenScroll">
         <div class="disc" v-for="music in this.$store.state.currentList" :key='music.url'>
-            <img :src="music.album.blurPicUrl" @click="changeMusic(music)">
+            <img :src="music.al.picUrl" @click="changeMusic(music)">
             <div class="about">
                 <div class="name">{{ music.name }}</div>
-                <div class="author">{{ music.artists[0].name }}</div>
+                <div class="author">{{ music.ar[0].name }}</div>
             </div>
         </div>
     </div>

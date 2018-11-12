@@ -5,7 +5,7 @@
             <use xlink:href="#icon-danquxunhuan" v-show="this.$store.state.currentLoop.single"></use>
         </svg>
         <div class="describe">
-            <img :src="this.$store.state.currentMusic.album.blurPicUrl" alt="" class="img">
+            <img :src="this.$store.state.currentMusic.al.picUrl" alt="" class="img">
             <div class="name">{{ this.$store.state.currentMusic.name }}</div>
             <div class="author">{{ this.$store.state.currentMusic.artists[0].name }}</div>
         </div>
@@ -32,7 +32,7 @@ export default {
             let musicMumber = this.currentList.length;
             let i = Math.floor(Math.randomShow() * (musicMumber + 1));
             let audio = document.getElementById("audio");
-            this.currentMusic.cover = this.currentList[i].album.blurPicUrl;
+            this.currentMusic.cover = this.currentList[i].al.picUrl;
             this.currentMusic.url = `http://music.163.com/song/media/outer/url?id=${
                 this.currentList[i].id
             }.mp3`;
@@ -49,7 +49,7 @@ export default {
                 return value === this.currentMusic;
             });
             let audio = document.getElementById("audio");
-            this.currentMusic.cover = this.currentList[i].album.blurPicUrl;
+            this.currentMusic.cover = this.currentList[i].al.picUrl;
             this.currentMusic.url = `http://music.163.com/song/media/outer/url?id=${
                 this.currentList[i].id
             }.mp3`;
@@ -71,7 +71,7 @@ export default {
                 i = i + 1;
             }
             let audio = document.getElementById("audio");
-            this.currentMusic.cover = this.currentList[i].album.blurPicUrl;
+            this.currentMusic.cover = this.currentList[i].al.picUrl;
             this.currentMusic.url = `http://music.163.com/song/media/outer/url?id=${
                 this.currentList[i].id
             }.mp3`;

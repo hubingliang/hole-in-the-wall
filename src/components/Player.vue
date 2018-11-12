@@ -3,7 +3,7 @@
         <div class="discBox" draggable="true">
             <img class="disc" src="../assets/disc-plus.png" alt="">
             <img class="disc_light" :class="{rotate: this.$store.state.currentPlay ,norotate: !this.$store.state.currentPlay}" src="../assets/disc_light-plus.png" alt="" id="disc">
-            <img class="cover" :class="{rotate: this.$store.state.currentPlay ,norotate: !this.$store.state.currentPlay}" id="cover" :src="this.$store.state.currentMusic.album.blurPicUrl" alt="">
+            <img class="cover" :class="{rotate: this.$store.state.currentPlay ,norotate: !this.$store.state.currentPlay}" id="cover" :src="this.$store.state.currentMusic.al.picUrl" alt="">
         </div>
         <audio id="audio" :src="musicUrl"></audio>
     </div>

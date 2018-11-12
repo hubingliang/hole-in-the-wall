@@ -9,8 +9,8 @@ export default new Vuex.Store({
             url: "http://ac-h6cX3hTU.clouddn.com/70e8d84cadcc6de6e746.mp3",
             name: "Hole in the wall",
             author: "Moses Gunn Collective",
-            album: {
-                blurPicUrl: 'http://ac-h6cX3hTU.clouddn.com/61a482e96ea53c5a280d.png',
+            al: {
+                picUrl: 'http://ac-h6cX3hTU.clouddn.com/61a482e96ea53c5a280d.png',
                 album: 'Mercy Mountain'
             },
             artists: [
@@ -22,8 +22,8 @@ export default new Vuex.Store({
             url: "http://ac-h6cX3hTU.clouddn.com/70e8d84cadcc6de6e746.mp3",
             name: "Hole in the wall",
             author: "Moses Gunn Collective",
-            album: {
-                blurPicUrl: 'http://ac-h6cX3hTU.clouddn.com/61a482e96ea53c5a280d.png',
+            al: {
+                picUrl: 'http://ac-h6cX3hTU.clouddn.com/61a482e96ea53c5a280d.png',
                 album: 'Mercy Mountain'
             },
             artists: [
